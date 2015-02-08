@@ -5,7 +5,7 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<meta name="description" content="Perfect for storing your gold anonymously, without exposure to Bitcoins massive price volatility and without any counterparty risk.">
 	
-	<title>What is BitGold?</title>
+	<title>Shapeshift spread</title>
 
 	<!-- Favicon -->
 	<link rel="icon" type="image/png" href="http://whatisbitusd.com/images/favicon.png" />
@@ -34,140 +34,119 @@
 
 	<script type="text/javascript">
 		$(document).ready(function () {
-			// function get_spread(a, b) {
-			// 	$.getJSON("https://cors.shapeshift.io/rate/" + b + "_" + a).done(function(a_b) {
-			// 		$.getJSON("https://cors.shapeshift.io/rate/" + a + "_" + b).done(function(b_a) {
-			// 			alert((1 - parseFloat(a_b["rate"]) * parseFloat(b_a["rate"]))*50);
-			// 		});
-			// 	});
-			// };
 			function set_spread(a, b, object) {
+			
 				$.getJSON("https://cors.shapeshift.io/rate/" + b + "_" + a).done(function(a_b) {
         	$.getJSON("https://cors.shapeshift.io/rate/" + a + "_" + b).done(function(b_a) {
-            object.text(Math.round((1 - parseFloat(a_b["rate"]) * parseFloat(b_a["rate"]))*5000)/100);
+        		var number = ((1 - Math.sqrt(parseFloat(a_b["rate"]) * parseFloat(b_a["rate"])))*100);
+            object.text(number.toFixed(2) + "%");
         	});
 	      });
 			}
-			function set_spread2(a, b, object) {
-				$.when($.getJSON("https://cors.shapeshift.io/rate/" + b + "_" + a), $.getJSON("https://cors.shapeshift.io/rate/" + a + "_" + b)).done(function(a_b, b_a) {
-					object.text(Math.round((1 - parseFloat(a_b["rate"]) * parseFloat(b_a["rate"]))*5000)/100);
+
+			function calculate_spreads() {
+				current_coin = $(".selected").attr('id')
+				$('.coin').not('.selected').each(function() {
+					set_spread(current_coin, $(this).attr('id'), $(this).children('.spread'));
 				});
-				// $.getJSON("https://cors.shapeshift.io/rate/" + b + "_" + a).done(function(a_b) {
-    //     	$.getJSON("https://cors.shapeshift.io/rate/" + a + "_" + b).done(function(b_a) {
-    //         object.text(Math.round((1 - parseFloat(a_b["rate"]) * parseFloat(b_a["rate"]))*5000)/100);
-    //     	});
-	   //    });					
 			}
-			//var get_rate = function(a, b) = $.getJSON("https://cors.shapeshift.io/rate/" + b + "_" + a;
-			// function get_rate(a, b) {
-			// 	$.getJSON("https://cors.shapeshift.io/rate/" + b + "_" + a).done(function( data ) {
-			// 		return parseFloat(data["rate"]);
-			// 	});
-			// }
-			var current_coin = "btc";
-			$('.coin').not('.selected').each(function() {
-				set_spread(current_coin, $(this).attr('id'), $(this).children('.spread'));
-			});
+			calculate_spreads();
+
+			$('.table').on('click', 'tr', function(event) {
+				//change selection
+				$(this).addClass('selected').siblings().removeClass('selected');
+				
+				//empty out old data
+				$(".spread").each(function() {
+					$(this).text("");
+				})
+
+				calculate_spreads();
+			});		
 		});
-		
 	</script>
 </head>
 
 <body>
-	<h1>ShapeShift spread:</h1>
-	<table>
+	<div class="container">
+	<div class="row">
+	<div class="col-xs-12">
+
+	<h1>ShapeShift Spread</h1>
+	<h4>Shapeshift spread caculates the spread per side for the different altcoins on Shapeshift.io
+</h4>
+	<table class="table">
 		<tr id="btc" class="coin selected">
-			<td class="from">Bitcoin</td>
+			<td class="name">Bitcoin</td>
+			<td class="spread"></td>
+		</tr>
+		<tr id="bts" class="coin">			
 			<td class="name">BitShares</td>
 			<td class="spread"></td>
 		</tr>
-		<tr id="bts" class="coin">
-			<td class="from">Bitcoin</td>
-			<td class="name">BitShares</td>
-			<td class="spread"></td>
-		</tr>
-		<tr id="bitusd" class="coin">
-			<td class="from">Bitcoin</td>
+	<tr id="bitusd" class="coin">			
 			<td class="name">BitUSD</td>
 			<td class="spread"></td>
 		</tr>
-		<tr id="ltc" class="coin">
-			<td class="from">Bitcoin</td>
+		<tr id="ltc" class="coin">			
 			<td class="name">Litecoin</td>
 			<td class="spread"></td>
 		</tr>
-		<tr id="ppc" class="coin">
-			<td class="from">Bitcoin</td>
+		<tr id="ppc" class="coin">			
 			<td class="name">Peercoin</td>
 			<td class="spread"></td>
 		</tr>
-		<tr id="drk" class="coin">
-			<td class="from">Bitcoin</td>
+		<tr id="drk" class="coin">			
 			<td class="name">Darkcoin</td>
 			<td class="spread"></td>
 		</tr>
-		<tr id="bts" class="coin">
-			<td class="from">Bitcoin</td>
-			<td class="name">BitShares</td>
-			<td class="spread"></td>
-		</tr>
-		<tr id="doge" class="coin">
-			<td class="from">Bitcoin</td>
+		<tr id="doge" class="coin">			
 			<td class="name">Dogecoin</td>
 			<td class="spread"></td>
 		</tr>
-		<tr id="nmc" class="coin">
-			<td class="from">Bitcoin</td>
+		<tr id="nmc" class="coin">			
 			<td class="name">Namecoin</td>
 			<td class="spread"></td>
 		</tr>
-		<tr id="ftc" class="coin">
-			<td class="from">Bitcoin</td>
+		<tr id="ftc" class="coin">			
 			<td class="name">Feathercoin</td>
 			<td class="spread"></td>
 		</tr>
-		<tr id="blk" class="coin">
-			<td class="from">Bitcoin</td>
+		<tr id="blk" class="coin">			
 			<td class="name">Blackcoin</td>
 			<td class="spread"></td>
 		</tr>
-		<tr id="ppc" class="coin">
-			<td class="from">Bitcoin</td>
+		<tr id="ppc" class="coin">			
 			<td class="name">Peercoin</td>
 			<td class="spread"></td>
 		</tr>
-		<tr id="drk" class="coin">
-			<td class="from">Bitcoin</td>
+		<tr id="drk" class="coin">			
 			<td class="name">Darkcoin</td>
 			<td class="spread"></td>
 		</tr>
-		<tr id="nxt" class="coin">
-			<td class="from">Bitcoin</td>
+		<tr id="nxt" class="coin">			
 			<td class="name">Nextcoin</td>
 			<td class="spread"></td>
 		</tr>
-		<tr id="btcd" class="coin">
-			<td class="from">Bitcoin</td>
+		<tr id="btcd" class="coin">			
 			<td class="name">Bitcoin Dark</td>
 			<td class="spread"></td>
 		</tr>
-		<tr id="qrk" class="coin">
-			<td class="from">Bitcoin</td>
+		<tr id="qrk" class="coin">			
 			<td class="name">Quark</td>
 			<td class="spread"></td>
 		</tr>
-		<tr id="rdd" class="coin">
-			<td class="from">Bitcoin</td>
+		<tr id="rdd" class="coin">			
 			<td class="name">Reddcoin</td>
 			<td class="spread"></td>
 		</tr>
-		<tr id="nbt" class="coin">
-			<td class="from">Bitcoin</td>
+		<tr id="nbt" class="coin">			
 			<td class="name">Nubits</td>
 			<td class="spread"></td>
 		</tr>
-
-		
-	</table
+	</table>
+	</div>
+	</div>
+	</div>
 </body>
 </html>
