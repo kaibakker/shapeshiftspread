@@ -1,7 +1,7 @@
 
 
 .selected {
-	background-color: #ddd;
+	background-color: #ACDEFC;
 }
 .selected .name {
 	padding-left: 0px;
@@ -11,12 +11,12 @@
 }
 
 .coin img {
-	width: 50px;
-	heigth: 50px;
+	width: 30px;
+	heigth: 30px;
 }
 .coin span {
 	margin-left: 10px;
-	font-size: 20px;
+	font-size: 16px;
 }
 
 body {
@@ -24,5 +24,14 @@ body {
 }
 
 .table .spread {
+	text-align: right;
+}
+
+.table .exchange_rate {
+	text-align: right;
+}
+
+
+.table .reversed_exchange_rate {
 	text-align: right;
 }
