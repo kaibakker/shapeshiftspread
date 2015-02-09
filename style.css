@@ -4,12 +4,20 @@
 	background-color: #ddd;
 }
 .selected .name {
-	text-align: left;
+	padding-left: 0px;
 }
 .name {
-	text-align: right;
+	padding-left: 40px;
 }
 
+.coin img {
+	width: 50px;
+	heigth: 50px;
+}
+.coin span {
+	margin-left: 10px;
+	font-size: 20px;
+}
 
 body {
 	font-family: 'Nunito', sans-serif;	
