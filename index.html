@@ -10,7 +10,6 @@
 	<!-- Favicon -->
 	<link rel="icon" type="image/png" href="http://whatisbitusd.com/images/favicon.png" />
 
-	
 	<!-- Bootstrap -->
 	<link href="http://whatisbitusd.com/css/bootstrap.min.css" rel="stylesheet" type="text/css">
 	
@@ -36,13 +35,16 @@
 	<script type="text/javascript">
 		$(document).ready(function () {
 			function set_spread(a, b, object) {
-			
 				$.getJSON("https://cors.shapeshift.io/rate/" + b + "_" + a).done(function(a_b) {
         	$.getJSON("https://cors.shapeshift.io/rate/" + a + "_" + b).done(function(b_a) {
-        		var number = ((1 - Math.sqrt(parseFloat(a_b["rate"]) * parseFloat(b_a["rate"])))*100);
-        		$(object).children('.exchange_rate').text((parseFloat(b_a["rate"]).toFixed(3)));
-        		$(object).children('.reversed_exchange_rate').text((1/parseFloat(a_b["rate"])).toFixed(3));
-            $(object).children('.spread').text(number.toFixed(2) + "%");
+        		//var number = ((1 - Math.sqrt(parseFloat(a_b["rate"]) * parseFloat(b_a["rate"])))*100);
+        		var exchange_rate = parseFloat(a_b["rate"]);
+        		var reversed_exchange_rate = parseFloat(b_a["rate"]);
+            var spread = (1/reversed_exchange_rate - exchange_rate)/exchange_rate*100;
+        		$(object).children('.spread').text(spread.toFixed(2) + "%");
+
+        		$(object).children('.exchange_rate').text(exchange_rate);
+        		$(object).children('.reversed_exchange_rate').text(reversed_exchange_rate);
         	});
 	      });
 			}
@@ -85,9 +87,17 @@
 	<div class="col-xs-12">
 
 	<h1>ShapeShift Spread</h1>
-	<p>This tool calculates the lost in value per exchange via <a href="https://shapeshift.io">shapeshift.io</a> for each exchange pair. To select a certain altcoin to exchange from just click on it.</p>
-	<p>Go to <a href="https://shapeshift.io">shapeshift.io</a> to trade now</p>
+  <p>Shapeshift spread calculates the spread for the <a href="https://shapeshift.io">shapeshift.io</a> exchange. Select an altcoin by clicking on it, to see the spread between your selected alt, to the other althcoins.</p>
 	<table class="table">
+    <thead>
+      <tr>
+        <td>Coin</td>
+        <td>bid-ask spread</td>
+        <td>kai spread</td>
+        <td>snor</td>
+      </tr>
+    </thead>
+    <tbody>
 		<tr id="btc" class="coin selected">
 			<td>
 				<div class="name">
@@ -275,7 +285,10 @@
 			<td class="reversed_exchange_rate"></td>
 			<td class="spread"></td>
 		</tr>
+  </tbody>
 	</table>
+	Do you like my tool, and want to check out the new shapeshift Lens tool. Donate me some altcoin :)
+	<script>function shapeshift_click(a,e){e.preventDefault();var link=a.href;window.open(link,'1418115287605','width=700,height=500,toolbar=0,menubar=0,location=0,status=1,scrollbars=1,resizable=0,left=0,top=0');return false;}</script> <a href="https://shapeshift.io/shifty.html?destination=13bAfQgzFCDRHPwYJkqXtFt9ebfjAjR5Eu" onclick="shapeshift_click(this, event);"><img class="ss-button" src="pay_with_altcoins.png"></a>
 	</div>
 	</div>
 	</div>
